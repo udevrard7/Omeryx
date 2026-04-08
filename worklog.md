@@ -75,3 +75,41 @@ Stage Summary:
 - /actualites/[slug]: full article page with PortableText, generateStaticParams, OG SEO
 - @portabletext/react integrated for rich text rendering with custom block/mark types
 - Blog works in "preview mode" with placeholder content; connects to Sanity when configured
+
+---
+Task ID: 7
+Agent: Main Developer
+Task: Create /contact page and update API route for OMERYX Group
+
+Work Log:
+- Installed `resend` (v6.10.0) and `@supabase/supabase-js` (v2.102.1)
+- Created `src/types/contact.ts`: Zod contactSchema (fullName, email, phone optional, subject enum eau/immobilier/transport/autre, message min 20 chars), ContactFormData type, SUBJECT_LABELS map
+- Created `src/lib/supabase.ts`: lazy-initialized Supabase client using service role key, graceful null fallback
+- Rewrote `src/app/api/contact/route.ts`:
+  - Rate limiting: 3 requests/IP/hour (3,600,000ms window), in-memory Map with cleanup interval
+  - Zod validation with contactSchema imported from types
+  - Supabase insert into `contact_leads` table (with graceful skip if not configured)
+  - Prisma/SQLite fallback save (non-blocking try/catch)
+  - Resend email notification with branded HTML template to contact@omeryxgroup.com (with graceful skip if no API key)
+  - Returns { success: true } (201), { error, details } (400), or { error } (429/500)
+- Created `src/app/contact/layout.tsx`: Server component with metadata (title, description, OG)
+- Created `src/app/contact/page.tsx`: Client component with:
+  - Hero: "Prenons Contact" with gradient background and wave divider
+  - 2-column layout (5-col grid): Contact info (2 cols) | Form card (3 cols)
+  - 4 info cards (Address, Email, Manager M. SANOGO ABOU, Hours) with hover effects
+  - CTA box for transport quotation form
+  - Form: react-hook-form + zodResolver, shadcn Select for subject, character counter on message, privacy notice
+  - Loading/error/success states with icons
+  - Bottom CTA section with Google Maps link
+  - Fully responsive (stacks on mobile)
+- Updated Header: Contact nav link → /contact (was /#contact), desktop CTA → /contact (was #contact), mobile CTA → /contact
+- Updated Footer: Contact quick link → /contact (was /#contact)
+- Verified: lint clean (0 errors), all 6 routes return 200, API POST validation works (400 for invalid, 201 for valid), rate limiting active
+
+Stage Summary:
+- /contact page with hero, 2-column form+info layout, 4 info cards, transport CTA
+- Shared contactSchema in types/contact.ts (fullName, email, phone, subject enum, message)
+- API route: Zod validation → Supabase save → Prisma fallback → Resend email → 201 response
+- Rate limiting: 3 submissions per IP per hour
+- Branded HTML email template via Resend
+- All navigation updated to point to /contact page

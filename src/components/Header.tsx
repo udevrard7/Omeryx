@@ -39,7 +39,7 @@ const NAV_ITEMS: NavItem[] = [
     ],
   },
   { label: "Actualités", href: "/actualites" },
-  { label: "Contact", href: "/#contact" },
+  { label: "Contact", href: "/contact" },
 ];
 
 /* ──────────────────────────── Component ─────────────────────────── */
@@ -152,7 +152,7 @@ export default function Header(): React.ReactElement {
             asChild
             className="hidden sm:inline-flex rounded-lg bg-[#2563EB] px-5 text-sm font-semibold text-white shadow-sm shadow-[#2563EB]/20 transition-all hover:bg-[#1D4ED8] hover:shadow-md hover:shadow-[#2563EB]/25"
           >
-            <a href="#contact">Nous Contacter</a>
+            <a href="/contact">Nous Contacter</a>
           </Button>
 
           {/* Hamburger (mobile) */}
@@ -239,7 +239,7 @@ export default function Header(): React.ReactElement {
             asChild
             className="w-full rounded-lg bg-[#2563EB] py-5 text-sm font-semibold text-white hover:bg-[#1D4ED8]"
           >
-            <a href="#contact" onClick={closeMobile}>
+            <a href="/contact" onClick={closeMobile}>
               Nous Contacter
             </a>
           </Button>
