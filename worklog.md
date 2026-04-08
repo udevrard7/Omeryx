@@ -72,3 +72,44 @@ Stage Summary:
 - CTABannerSection: blue banner with contact CTA
 - QuickContactSection: validated contact form with success state
 - All animations use pure Tailwind CSS (transition, transform) — no external animation libs
+
+---
+Task ID: 4
+Agent: Image Generator
+Task: Generate 3 hero images for activity detail pages
+
+Work Log:
+- Attempted 1440x720 size but API rejected (720 is not a multiple of 32); fell back to 1344x768
+- Generated hero-eau.png: Modern water bottling factory interior with blue industrial lighting (218 KB)
+- Generated hero-immobilier.png: African cityscape with construction cranes at golden hour (196 KB)
+- Generated hero-transport.png: Cargo trucks and shipping containers at West African port (198 KB)
+- All 3 images saved to /home/z/my-project/public/images/
+
+Stage Summary:
+- 3 hero images at 1344x768 resolution (~612 KB total)
+- hero-eau.png, hero-immobilier.png, hero-transport.png
+
+---
+Task ID: 5
+Agent: Main Developer
+Task: Create 3 activity detail pages with SEO, hero images, service grids, and quotation form
+
+Work Log:
+- Generated 3 AI hero images via Task agent (1344x768): water factory, Abidjan skyline, port logistics
+- Created QuotationForm.tsx: Client Component with react-hook-form + zod (8 fields: name, email, origin, destination, cargo type, weight, date, notes), POST to /api/contact, 4 states, responsive grid layout
+- Created app/activites/eau/page.tsx: Server Component, generateMetadata() with OG, hero with bg-image + gradient overlay, breadcrumb (Accueil > Activités > Eau), description section with 3 highlights (Normes OMS, Éco-responsable, Capacité industrielle), 4 service cards (Production & Purification, Conditionnement PET, Distribution, Export), CTA "Devenir distributeur — Contactez-nous" bg-[#2563EB]
+- Created app/activites/immobilier/page.tsx: Server Component, generateMetadata() with OG, hero navy gradient, 3 highlights (Sécurité juridique, Expertise locale, Couverture nationale), 4 service cards (Location, Transactions, Matériaux BTP, Représentation), CTA "Soumettre un projet immobilier" bg-[#1B3A5C]
+- Created app/activites/transport/page.tsx: Server Component, generateMetadata() with OG, hero navy→amber gradient, 3 highlights (Rapidité, Réseau CEDEAO, Sécurité), 4 service cards (Transport multimodal, Logistique, Dernier kilomètre, Formalités douanières), QuotationForm, CTA "Demander une cotation" bg-[#F59E0B]
+- Updated Header.tsx: NAV_ITEMS now use real routes (/activites/eau, /activites/immobilier, /activites/transport)
+- Updated Footer.tsx: ACTIVITIES and QUICK_LINKS updated to use real routes
+- Updated ActivitiesSection.tsx: Cards wrapped in Link components pointing to detail pages
+- Verified: lint clean (0 errors), all 4 routes return HTTP 200
+
+Stage Summary:
+- 3 new route pages: /activites/eau, /activites/immobilier, /activites/transport
+- 1 new component: QuotationForm.tsx (transport quotation form)
+- 3 AI-generated hero images (1344x768, ~612 KB total)
+- All pages have: hero with image + breadcrumb, description section, services grid, contextualized CTA
+- Transport page has additional quotation form with 8 fields
+- All navigation (Header, Footer, Homepage cards) updated to link to detail pages
+- generateMetadata() SEO on every page with OpenGraph metadata

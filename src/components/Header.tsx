@@ -27,19 +27,19 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: "Accueil", href: "#accueil" },
-  { label: "À Propos", href: "#a-propos" },
+  { label: "Accueil", href: "/" },
+  { label: "À Propos", href: "/#a-propos" },
   {
     label: "Nos Activités",
-    href: "#activites",
+    href: "/#activites",
     children: [
-      { label: "Eau Conditionnée", href: "#eau", icon: Droplets },
-      { label: "Immobilier & BTP", href: "#immobilier", icon: Building2 },
-      { label: "Transport & Logistique", href: "#transport", icon: Truck },
+      { label: "Eau Conditionnée", href: "/activites/eau", icon: Droplets },
+      { label: "Immobilier & BTP", href: "/activites/immobilier", icon: Building2 },
+      { label: "Transport & Logistique", href: "/activites/transport", icon: Truck },
     ],
   },
-  { label: "Actualités", href: "#actualites" },
-  { label: "Contact", href: "#contact" },
+  { label: "Actualités", href: "/#actualites" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 /* ──────────────────────────── Component ─────────────────────────── */

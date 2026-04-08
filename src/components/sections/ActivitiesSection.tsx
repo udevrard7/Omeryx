@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   Droplets,
   Building2,
@@ -18,6 +19,7 @@ interface Activity {
   bgColor: string;
   borderColor: string;
   linkText: string;
+  href: string;
 }
 
 const ACTIVITIES: Activity[] = [
@@ -30,6 +32,7 @@ const ACTIVITIES: Activity[] = [
     bgColor: "bg-[#EFF6FF]",
     borderColor: "border-[#2563EB]/20 hover:border-[#2563EB]/40",
     linkText: "En savoir plus →",
+    href: "/activites/eau",
   },
   {
     title: "Immobilier & BTP",
@@ -40,6 +43,7 @@ const ACTIVITIES: Activity[] = [
     bgColor: "bg-[#EFF6FF]",
     borderColor: "border-[#1B3A5C]/20 hover:border-[#1B3A5C]/40",
     linkText: "En savoir plus →",
+    href: "/activites/immobilier",
   },
   {
     title: "Transport & Logistique",
@@ -50,6 +54,7 @@ const ACTIVITIES: Activity[] = [
     bgColor: "bg-[#FFFBEB]",
     borderColor: "border-[#F59E0B]/20 hover:border-[#F59E0B]/40",
     linkText: "En savoir plus →",
+    href: "/activites/transport",
   },
 ];
 
@@ -76,37 +81,42 @@ export default function ActivitiesSection(): React.ReactElement {
         {/* Cards grid */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
           {ACTIVITIES.map((activity) => (
-            <Card
+            <Link
               key={activity.title}
-              className={`group cursor-pointer border ${activity.borderColor} bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/[.06]`}
+              href={activity.href}
+              className="block"
             >
-              <CardContent className="p-6 lg:p-8">
-                {/* Icon */}
-                <div
-                  className={`mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl ${activity.bgColor} transition-transform duration-300 group-hover:scale-110`}
-                >
-                  <activity.icon className={`h-7 w-7 ${activity.color}`} />
-                </div>
+              <Card
+                className={`group cursor-pointer border ${activity.borderColor} bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/[.06]`}
+              >
+                <CardContent className="p-6 lg:p-8">
+                  {/* Icon */}
+                  <div
+                    className={`mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl ${activity.bgColor} transition-transform duration-300 group-hover:scale-110`}
+                  >
+                    <activity.icon className={`h-7 w-7 ${activity.color}`} />
+                  </div>
 
-                {/* Title */}
-                <h3 className="mb-3 text-xl font-bold text-[#1B3A5C]">
-                  {activity.title}
-                </h3>
+                  {/* Title */}
+                  <h3 className="mb-3 text-xl font-bold text-[#1B3A5C]">
+                    {activity.title}
+                  </h3>
 
-                {/* Description */}
-                <p className="mb-5 text-sm leading-relaxed text-[#6B7280]">
-                  {activity.description}
-                </p>
+                  {/* Description */}
+                  <p className="mb-5 text-sm leading-relaxed text-[#6B7280]">
+                    {activity.description}
+                  </p>
 
-                {/* Link */}
-                <span
-                  className={`inline-flex items-center gap-1.5 text-sm font-semibold ${activity.color} transition-all duration-300 group-hover:gap-2.5`}
-                >
-                  {activity.linkText}
-                  <ArrowRight className="h-4 w-4" />
-                </span>
-              </CardContent>
-            </Card>
+                  {/* Link */}
+                  <span
+                    className={`inline-flex items-center gap-1.5 text-sm font-semibold ${activity.color} transition-all duration-300 group-hover:gap-2.5`}
+                  >
+                    {activity.linkText}
+                    <ArrowRight className="h-4 w-4" />
+                  </span>
+                </CardContent>
+              </Card>
+            </Link>
           ))}
         </div>
       </div>

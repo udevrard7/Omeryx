@@ -12,17 +12,17 @@ import {
 /* ────────────────────────── Data ──────────────────────────── */
 
 const ACTIVITIES = [
-  { label: "Eau Conditionnée", href: "#eau", icon: Droplets },
-  { label: "Immobilier & BTP", href: "#immobilier", icon: Building2 },
-  { label: "Transport & Logistique", href: "#transport", icon: Truck },
+  { label: "Eau Conditionnée", href: "/activites/eau", icon: Droplets },
+  { label: "Immobilier & BTP", href: "/activites/immobilier", icon: Building2 },
+  { label: "Transport & Logistique", href: "/activites/transport", icon: Truck },
 ];
 
 const QUICK_LINKS = [
-  { label: "Accueil", href: "#accueil" },
-  { label: "À Propos", href: "#a-propos" },
-  { label: "Actualités", href: "#actualites" },
-  { label: "Contact", href: "#contact" },
-  { label: "Mentions Légales", href: "#mentions-legales" },
+  { label: "Accueil", href: "/" },
+  { label: "À Propos", href: "/#a-propos" },
+  { label: "Actualités", href: "/#actualites" },
+  { label: "Contact", href: "/#contact" },
+  { label: "Mentions Légales", href: "/mentions-legales" },
 ] as const;
 
 /* ──────────────────────── Component ───────────────────────── */
@@ -35,7 +35,7 @@ export default function Footer(): React.ReactElement {
         <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4">
           {/* Col 1 – Logo & description */}
           <div className="sm:col-span-2 lg:col-span-1 space-y-4">
-            <Link href="#accueil" className="inline-flex items-center gap-2.5">
+            <Link href="/" className="inline-flex items-center gap-2.5">
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/10 text-white font-extrabold text-base">
                 O
               </div>
