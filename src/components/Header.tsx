@@ -38,7 +38,7 @@ const NAV_ITEMS: NavItem[] = [
       { label: "Transport & Logistique", href: "/activites/transport", icon: Truck },
     ],
   },
-  { label: "Actualités", href: "/#actualites" },
+  { label: "Actualités", href: "/actualites" },
   { label: "Contact", href: "/#contact" },
 ];
 
@@ -71,7 +71,7 @@ export default function Header(): React.ReactElement {
     <header className="sticky top-0 z-50 w-full border-b border-gray-100 bg-white">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8 lg:h-[72px]">
         {/* ── Logo ── */}
-        <Link href="#accueil" className="flex items-center gap-2.5 select-none">
+        <Link href="/" className="flex items-center gap-2.5 select-none">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#1B3A5C] text-white font-extrabold text-base">
             O
           </div>

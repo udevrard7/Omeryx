@@ -20,7 +20,7 @@ const ACTIVITIES = [
 const QUICK_LINKS = [
   { label: "Accueil", href: "/" },
   { label: "À Propos", href: "/#a-propos" },
-  { label: "Actualités", href: "/#actualites" },
+  { label: "Actualités", href: "/actualites" },
   { label: "Contact", href: "/#contact" },
   { label: "Mentions Légales", href: "/mentions-legales" },
 ] as const;
