@@ -113,3 +113,41 @@ Stage Summary:
 - Rate limiting: 3 submissions per IP per hour
 - Branded HTML email template via Resend
 - All navigation updated to point to /contact page
+
+---
+Task ID: 8
+Agent: Main Developer
+Task: Migrate database to Supabase PostgreSQL
+
+Work Log:
+- Updated .env.local with Supabase DATABASE_URL (pooling port 6543) and DIRECT_URL (port 5432)
+- Prisma schema already configured for PostgreSQL with @@map("contact_leads") and uuid PK
+- Ran prisma generate + db push — table already in sync
+- Rewrote API route: removed dynamic import, uses `db` from lib/db.ts (fixes Turbopack compatibility)
+- Verified: 3 contact submissions saved in Supabase PostgreSQL via API POST
+
+Stage Summary:
+- Database migrated from SQLite to Supabase PostgreSQL
+- Table contact_leads: id (UUID), full_name, email, phone, subject, message, read, created_at
+- API route simplified for Turbopack compatibility
+
+---
+Task ID: 9
+Agent: Main Developer
+Task: Configure Sanity CMS and deploy blog content
+
+Work Log:
+- Updated .env.local: NEXT_PUBLIC_SANITY_PROJECT_ID=0wiemoi1, SANITY_API_TOKEN (write-enabled)
+- Updated src/lib/sanity/client.ts: added getWriteClient() with token for server-side mutations
+- Created and deployed via Sanity API:
+  - 1 author: OMERYX Group (author-omeryx)
+  - 4 categories: Eau Conditionnée, Immobilier & BTP, Transport & Logistique, Entreprise
+  - 4 blog posts with rich text content (PortableText blocks, H2, blockquote, strong marks)
+- Verified all routes: /actualites → 200, /actualites/[slug] → 200 with live Sanity data
+- Lint clean, pushed to GitHub
+
+Stage Summary:
+- Sanity CMS fully connected with read + write clients
+- 4 real blog articles from Sanity displayed on /actualites
+- /actualites/[slug] renders PortableText rich content
+- All 7 pages return 200 with live data
