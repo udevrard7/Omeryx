@@ -3,31 +3,54 @@ import imageUrlBuilder from "@sanity/image-url";
 import type { SanityClient } from "@sanity/client";
 
 let _client: SanityClient | null = null;
+let _writeClient: SanityClient | null = null;
 
 type ImageUrlBuilder = ReturnType<ReturnType<typeof imageUrlBuilder>["image"]>;
 
+const PROJECT_ID = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "";
+const DATASET = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
+
 /**
- * Lazy-initialized Sanity client.
- * Returns null if env vars are missing — callers should handle this gracefully.
+ * Public read-only client (uses CDN in production).
  */
 export function getClient(): SanityClient | null {
   if (_client) return _client;
 
-  const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
-  const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
-
-  if (!projectId || projectId === "") {
+  if (!PROJECT_ID) {
     return null;
   }
 
   _client = createClient({
-    projectId,
-    dataset,
+    projectId: PROJECT_ID,
+    dataset: DATASET,
     apiVersion: "2024-01-01",
     useCdn: process.env.NODE_ENV === "production",
   });
 
   return _client;
+}
+
+/**
+ * Write client with API token for mutations (create, update, delete).
+ * Only used server-side.
+ */
+export function getWriteClient(): SanityClient | null {
+  if (_writeClient) return _writeClient;
+
+  const token = process.env.SANITY_API_TOKEN;
+  if (!PROJECT_ID || !token) {
+    return null;
+  }
+
+  _writeClient = createClient({
+    projectId: PROJECT_ID,
+    dataset: DATASET,
+    apiVersion: "2024-01-01",
+    useCdn: false,
+    token,
+  });
+
+  return _writeClient;
 }
 
 /* ──────────────────── Image URL Helper ──────────────────── */
