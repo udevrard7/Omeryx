@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { contactSchema, SUBJECT_LABELS } from "@/types/contact";
-import { getSupabaseClient } from "@/lib/supabase";
+import { db } from "@/lib/db";
 import { Resend } from "resend";
 
 /* ──────────────────── Rate Limiting ──────────────────── */
@@ -33,7 +33,7 @@ setInterval(() => {
 
 function getResendClient() {
   const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) return null;
+  if (!apiKey || apiKey === "re_your_resend_api_key") return null;
   return new Resend(apiKey);
 }
 
@@ -118,19 +118,6 @@ function escapeHtml(text: string): string {
     .replace(/'/g, "&#039;");
 }
 
-/* ──────────────────── Prisma (fallback) ──────────────────── */
-
-async function getPrisma() {
-  const { PrismaClient } = await import("@prisma/client");
-  const globalForPrisma = globalThis as unknown as {
-    prisma: InstanceType<typeof PrismaClient> | undefined;
-  };
-  if (!globalForPrisma.prisma) {
-    globalForPrisma.prisma = new PrismaClient();
-  }
-  return globalForPrisma.prisma;
-}
-
 /* ──────────────────── POST Handler ──────────────────── */
 
 export async function POST(request: NextRequest) {
@@ -167,47 +154,18 @@ export async function POST(request: NextRequest) {
 
     const data = result.data;
 
-    /* 3. Save to Supabase */
-    try {
-      const supabase = getSupabaseClient();
-      if (supabase) {
-        const { error: supabaseError } = await supabase
-          .from("contact_leads")
-          .insert({
-            full_name: data.fullName,
-            email: data.email,
-            phone: data.phone || null,
-            subject: data.subject,
-            message: data.message,
-          });
+    /* 3. Save to Supabase via Prisma (contact_leads table) */
+    await db.contactSubmission.create({
+      data: {
+        fullName: data.fullName,
+        email: data.email,
+        phone: data.phone || null,
+        subject: data.subject,
+        message: data.message,
+      },
+    });
 
-        if (supabaseError) {
-          console.error("[Supabase] Insert error:", supabaseError.message);
-        }
-      } else {
-        console.warn("[Supabase] Client not configured, skipping Supabase save");
-      }
-    } catch (supabaseErr) {
-      console.error("[Supabase] Error:", supabaseErr);
-    }
-
-    /* 4. Fallback: also save to Prisma/SQLite */
-    try {
-      const prisma = await getPrisma();
-      await prisma.contactSubmission.create({
-        data: {
-          fullName: data.fullName,
-          email: data.email,
-          phone: data.phone || null,
-          subject: data.subject,
-          message: data.message,
-        },
-      });
-    } catch (dbError) {
-      console.error("[Prisma] Save error (non-blocking):", dbError);
-    }
-
-    /* 5. Send email via Resend */
+    /* 4. Send email via Resend (non-blocking) */
     try {
       const resend = getResendClient();
       if (resend) {
@@ -222,14 +180,12 @@ export async function POST(request: NextRequest) {
           html: buildEmailHtml(data),
           replyTo: data.email,
         });
-      } else {
-        console.warn("[Resend] API key not configured, skipping email");
       }
     } catch (emailErr) {
       console.error("[Resend] Email error (non-blocking):", emailErr);
     }
 
-    /* 6. Success response */
+    /* 5. Success response */
     return NextResponse.json(
       { success: true, message: "Message envoyé avec succès" },
       { status: 201 }

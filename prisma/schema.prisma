@@ -3,17 +3,20 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model ContactSubmission {
-  id        String   @id @default(cuid())
-  fullName  String
+  id        String   @id @default(uuid()) @db.Uuid
+  fullName  String   @map("full_name")
   email     String
   phone     String?
   subject   String
   message   String
   read      Boolean  @default(false)
-  createdAt DateTime @default(now())
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("contact_leads")
 }
