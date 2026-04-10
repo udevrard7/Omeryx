@@ -171,7 +171,7 @@ export async function generateMetadata({
     openGraph: {
       title: post.title,
       description: post.excerpt || undefined,
-      url: `https://omeryxgroup.com/actualites/${post.slug.current}`,
+      url: `https://omeryxgroup.com/actualites/${post.slug}`,
       type: "article",
       publishedTime: post.publishedAt,
       authors: post.author ? [post.author.name] : undefined,

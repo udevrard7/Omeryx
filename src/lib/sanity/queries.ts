@@ -29,17 +29,13 @@ export interface PostAuthor {
 export interface PostCategory {
   _id: string;
   title: string;
-  slug: {
-    current: string;
-  };
+  slug: string;
 }
 
 export interface Post {
   _id: string;
   title: string;
-  slug: {
-    current: string;
-  };
+  slug: string;
   publishedAt: string;
   excerpt?: string;
   mainImage?: SanityImage;

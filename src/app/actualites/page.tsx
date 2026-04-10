@@ -162,7 +162,7 @@ function PostCard({ post }: { post: Post }): React.ReactElement {
   const category = post.categories?.[0];
 
   return (
-    <Link href={`/actualites/${post.slug.current}`} className="block group">
+    <Link href={`/actualites/${post.slug}`} className="block group">
       <Card className="h-full overflow-hidden border border-gray-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-black/[.06]">
         {/* Image */}
         <div className="relative aspect-[16/9] overflow-hidden bg-[#F3F4F6]">
